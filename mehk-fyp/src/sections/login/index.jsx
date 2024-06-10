@@ -24,10 +24,15 @@ function LoginView() {
   const router = useRouter();
 
   const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const login = () => {
+
+    if (!email || !password) {
+      alert("Please fill all the fields properly")
+      return;
+    }
 
     fetch("http://localhost:5000/api/v1/employee/login", {
       headers: {
@@ -40,21 +45,27 @@ function LoginView() {
       }),
     })
       .then((response) => response.json())
-<<<<<<< HEAD
-      .then((user) => console.log(user));
-    router.push("/home");
-=======
+
       .then((user) => {
-        if (!user || user.success == true) {
+        if (user || user.success == true) {
           // console.log(user.token);
           setToken(`${user.token}`);
           console.log(
             `local storage***\n${getToken()} `
           );
+
+          router.push("/home");
+        }
+
+        else if(!user){
+          alert("Invalid Credentials")
+        }
+        
+        else{
+          alert("Invalid Credentials")
         }
       });
-    router.push("/dashboard");
->>>>>>> 98f13a46ae2df3fde8cf47852e4b6dfcbc32e9ff
+    
   };
 
   const renderForm = (
