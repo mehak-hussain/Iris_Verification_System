@@ -9,7 +9,7 @@ const icon = (name) => (
 const navConfig = [
   {
     title: 'home',
-    path: '/',
+    path: '/home',
     icon: icon('ic_blog'),
   },
   {
