@@ -26,6 +26,7 @@ const RegistrationForm = () => {
   const [cnic, setCnic] = useState("");
   const [nationality, setNationality] = useState("");
   const [termsAgreed, setTermsAgreed] = useState(false);
+  const [image, setImage] = useState(null);
 
   // State variables for validation errors
   const [firstNameError, setFirstNameError] = useState("");
@@ -36,6 +37,7 @@ const RegistrationForm = () => {
   const [phoneNumberError, setPhoneNumberError] = useState("");
   const [cnicError, setCnicError] = useState("");
   const [nationalityError, setNationalityError] = useState("");
+  const [imageError, setImageError] = useState("");
 
   // Validation functions
   const validateFirstName = () => {
@@ -113,6 +115,18 @@ const RegistrationForm = () => {
     }
   };
 
+  const validateImage = () => {
+    if (!image) {
+      setImageError("Image is required");
+    } else if (!image.type.startsWith("image/")) {
+      setImageError("Invalid image format. Only images are allowed.");
+    } else if (image.size > 2 * 1024 * 1024) { // 2MB size limit
+      setImageError("Image size must be less than 2MB");
+    } else {
+      setImageError("");
+    }
+  };
+
   // Function to handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -126,6 +140,7 @@ const RegistrationForm = () => {
     validatePhoneNumber();
     validateCnic();
     validateNationality();
+    validateImage();
 
     // If terms are not agreed, set an error message
     if (!termsAgreed) {
@@ -142,7 +157,8 @@ const RegistrationForm = () => {
       !dobError &&
       !phoneNumberError &&
       !cnicError &&
-      !nationalityError
+      !nationalityError &&
+      !imageError
     ) {
       register();
       // Submit the form
@@ -152,34 +168,36 @@ const RegistrationForm = () => {
 
   const register = () => {
     const token = getToken();
-    const body = JSON.stringify({
-      person: {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        address: address,
-        dob: dob,
-        phone: phoneNumber,
-        cnic: cnic,
-        nationality: nationality,
-        gender: "male",
-        religion: "Islam",
-        iris: "iris",
-      },
-    });
-    console.log(body);
+    const formData = new FormData();
+    formData.append("firstName", firstName);
+    formData.append("lastName", lastName);
+    formData.append("email", email);
+    formData.append("address", address);
+    formData.append("dob", dob);
+    formData.append("phone", phoneNumber);
+    formData.append("cnic", cnic);
+    formData.append("nationality", nationality);
+    formData.append("gender", "male");
+    formData.append("religion", "Islam");
+    formData.append("iris", "iris");
+
+    if (image) {
+      formData.append("image", image);
+    }
+
+    console.log(formData);
     console.log(`---http://localhost:5000/api/v1/employee/person/register---`);
     fetch(`http://localhost:5000/api/v1/employee/person/register`, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: token,
       },
       method: "POST",
-      body: body,
+      body: formData,
     })
       .then((response) => response.json())
       .then((user) => console.log(user));
   };
+
   return (
     <Container>
       <Stack
@@ -355,6 +373,27 @@ const RegistrationForm = () => {
                     />
                   </Box>
                 </Grid>
+                {/* Add Image */}
+                <Grid item xs={12} sm={6}>
+                  <Box sx={{ m: 2 }}>
+                    <Typography variant="h6" sx={{ m: 1 }}>
+                      Add Iris Image
+                    </Typography>
+                    <TextField
+                      fullWidth
+                      required
+                      type="file"
+                      onChange={(e) => {
+                        setImage(e.target.files[0]);
+                        validateImage();
+                      }}
+                      error={!!imageError}
+                      helperText={imageError}
+                      id="image"
+                      InputLabelProps={{ shrink: true }}
+                    />
+                  </Box>
+                </Grid>
               </Grid>
 
               {/* Terms and Conditions */}
@@ -369,7 +408,7 @@ const RegistrationForm = () => {
                 </Typography>
               </Grid>
 
-              {/* Submit Button */}
+              {/* Next Button */}
               <Grid container spacing={2} sx={{ my: 1, mx: 2 }}>
                 <Button
                   type="submit"
@@ -377,7 +416,7 @@ const RegistrationForm = () => {
                   color="inherit"
                   sx={{ mt: 5 }}
                 >
-                  Submit
+                  Next
                 </Button>
               </Grid>
             </form>
