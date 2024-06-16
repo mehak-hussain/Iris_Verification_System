@@ -1,14 +1,62 @@
-import Container from '@mui/material/Container';
-import Grid from '@mui/material/Unstable_Grid2';
-import Typography from '@mui/material/Typography';
-import AppCurrentVisits from '../app-current-visits';
-import AppWebsiteVisits from '../app-website-visits';
-import AppWidgetSummary from '../app-widget-summary';
-import AppConversionRates from '../app-conversion-rates';
-
+import Container from "@mui/material/Container";
+import Grid from "@mui/material/Unstable_Grid2";
+import Typography from "@mui/material/Typography";
+import AppCurrentVisits from "../app-current-visits";
+import AppWebsiteVisits from "../app-website-visits";
+import AppWidgetSummary from "../app-widget-summary";
+import AppConversionRates from "../app-conversion-rates";
+import React, { useState, useEffect } from "react";
 // ----------------------------------------------------------------------
+import { getToken } from "../../../utils/token-util";
 
 export default function AppView() {
+  const [stats, setStats] = useState(null);
+
+  const getStats = () => {
+    const token = getToken();
+
+    fetch(`http://localhost:5000/api/v1/admin/statsApi`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          setStats(data.data);
+        } else {
+          console.error("Failed to fetch data");
+        }
+      })
+      .catch((error) => console.error("Error fetching data:", error));
+  };
+  let user = 0;
+  useEffect(() => {
+    getStats();
+  }, []);
+
+  if (!stats) {
+    return <div>Loading...</div>;
+  }
+  stats.gender.map((g) => (user = user + g.count));
+  const genderData = stats.gender.map((g) => ({
+    label: g.gender,
+    value: g.count,
+  }));
+  const registrationData = {
+    labels: stats.createdAt.map((item) => item.date),
+    series: [
+      {
+        name: "Registrations",
+        type: "line",
+        fill: "solid",
+        data: stats.createdAt.map((item) => item.count),
+      },
+    ],
+  };
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -19,7 +67,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} md={3}>
           <AppWidgetSummary
             title="Users"
-            total={7}
+            total={user}
             color="success"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
           />
@@ -30,7 +78,9 @@ export default function AppView() {
             title="Successful Registration"
             total={133}
             color="info"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+            icon={
+              <img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />
+            }
           />
         </Grid>
 
@@ -48,7 +98,9 @@ export default function AppView() {
             title="Verification Requests"
             total={234}
             color="error"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+            icon={
+              <img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />
+            }
           />
         </Grid>
 
@@ -56,42 +108,14 @@ export default function AppView() {
           <AppWebsiteVisits
             title="Monthly Registrations"
             subheader="(+43%) than last year"
-            chart={{
-              labels: [
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
-              ],
-              series: [
-                {
-                  name: 'Team C',
-                  type: 'line',
-                  fill: 'solid',
-                  data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
-                },
-              ],
-            }}
+            chart={registrationData}
           />
         </Grid>
-
         <Grid xs={12} md={6} lg={4}>
           <AppCurrentVisits
             title="Gender"
             chart={{
-              series: [
-                { label: 'Male', value: 4344 },
-                { label: 'Female', value: 5435 },
-                { label: 'Other', value: 1443 },
-
-              ],
+              series: genderData,
             }}
           />
         </Grid>
@@ -102,16 +126,16 @@ export default function AppView() {
             subheader="(+43%) than last year"
             chart={{
               series: [
-                { label: 'Italy', value: 400 },
-                { label: 'Japan', value: 430 },
-                { label: 'China', value: 448 },
-                { label: 'Canada', value: 470 },
-                { label: 'France', value: 540 },
-                { label: 'Germany', value: 580 },
-                { label: 'South Korea', value: 690 },
-                { label: 'Netherlands', value: 1100 },
-                { label: 'United States', value: 1200 },
-                { label: 'United Kingdom', value: 1380 },
+                { label: "Italy", value: 400 },
+                { label: "Japan", value: 430 },
+                { label: "China", value: 448 },
+                { label: "Canada", value: 470 },
+                { label: "France", value: 540 },
+                { label: "Germany", value: 580 },
+                { label: "South Korea", value: 690 },
+                { label: "Netherlands", value: 1100 },
+                { label: "United States", value: 1200 },
+                { label: "United Kingdom", value: 1380 },
               ],
             }}
           />
