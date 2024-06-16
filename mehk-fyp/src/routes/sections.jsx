@@ -8,12 +8,12 @@ export const AllEmployeesPage = lazy(() => import("../pages/all-employees"));
 export const LoginPage = lazy(() => import("../pages/login"));
 export const Page404 = lazy(() => import("../pages/page-not-found"));
 export const FeedbackPage = lazy(() => import("../pages/feedback"));
+export const FeedbackResponsePage = lazy(() => import("../pages/feedback-responses"));
 export const AddEmployeePage = lazy(() => import("../pages/add-employee"));
 export const RegisterPage = lazy(() => import("../pages/register"));
 export const DashboardPage = lazy(() => import("../pages/dashboard"));
 export const VerificationPage = lazy(() => import("../pages/verification"));
-export const AccountSettingPage = lazy(() =>
-  import("../pages/account-setting")
+export const AccountSettingPage = lazy(() =>import("../pages/account-setting")
 );
 // ----------------------------------------------------------------------
 
@@ -43,6 +43,7 @@ export default function Router() {
         { path: "home", element: <IndexPage />, index: true },
         { path: "all-employee", element: <AllEmployeesPage /> },
         { path: "feedback", element: <FeedbackPage /> },
+        { path: "feedback-responses", element: <FeedbackResponsePage /> },
         { path: "add-employee", element: <AddEmployeePage /> },
         { path: "register", element: <RegisterPage /> },
         { path: "dashboard", element: <DashboardPage /> },
