@@ -14,11 +14,11 @@ import { account } from '../../../_mock/account';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
-  // {
-  //   label: 'Edit Profile',
-  //   icon: 'eva:home-fill',
-  //   url:"/"
-  // },
+  {
+    label: 'Employee Profile',
+    icon: 'eva:home-fill',
+    url:"/employee-profile"
+  },
   {
     label: 'Add Employee',
     icon: 'eva:person-fill',
