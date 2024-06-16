@@ -45,27 +45,24 @@ export default function FeedbackResponsePage() {
 
   const getFeedbackApi = () => {
     const token = getToken();
-    try {
-      fetch(`http://localhost:5000/api/v1/admin/getAllFeedback`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: token,
-        },
-        method: "GET",
+
+    fetch(`http://localhost:5000/api/v1/admin/getAllFeedback`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+      method: "GET",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        if (data.success) {
+          setFeedbacks(data.feedback);
+        } else {
+          console.error("Failed to fetch data");
+        }
       })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log(data);
-          if (data.success) {
-            setFeedbacks(data.feedback);
-          } else {
-            console.error("Failed to fetch data");
-          }
-        })
-        .catch((error) => console.error("Error fetching data:", error));
-    } catch (error) {
-      console.log(error);
-    }
+      .catch((error) => console.error("Error fetching data:", error));
   };
   useEffect(() => {
     getFeedbackApi();
