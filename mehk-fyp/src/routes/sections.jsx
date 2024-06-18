@@ -13,6 +13,7 @@ export const AddEmployeePage = lazy(() => import("../pages/add-employee"));
 export const EmployeeProfilePage = lazy(() => import("../pages/employee-profile"));
 export const RegisterPage = lazy(() => import("../pages/register"));
 export const DashboardPage = lazy(() => import("../pages/dashboard"));
+export const PersonProfPage = lazy(() => import("../pages/person-profile"));
 export const VerificationPage = lazy(() => import("../pages/verification"));
 export const AccountSettingPage = lazy(() =>import("../pages/account-setting")
 );
@@ -47,6 +48,7 @@ export default function Router() {
         { path: "feedback-responses", element: <FeedbackResponsePage /> },
         { path: "add-employee", element: <AddEmployeePage /> },
         { path: "employee-profile", element: <EmployeeProfilePage/>},
+        { path: "person-profile", element: <PersonProfPage/>},
         { path: "register", element: <RegisterPage /> },
         { path: "dashboard", element: <DashboardPage /> },
         { path: "verification", element: <VerificationPage /> },

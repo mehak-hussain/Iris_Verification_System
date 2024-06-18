@@ -1,3 +1,4 @@
+import { ClassNames } from '@emotion/react';
 import SvgColor from '../../components/svg-color';
 
 // ----------------------------------------------------------------------
@@ -25,6 +26,11 @@ const navConfig = [
   {
     title: 'registration',
     path: '/register',
+    icon: icon('ic_user'),
+  },
+  {
+    title: 'person\'s data',
+    path: '/person-profile',
     icon: icon('ic_user'),
   },
   {

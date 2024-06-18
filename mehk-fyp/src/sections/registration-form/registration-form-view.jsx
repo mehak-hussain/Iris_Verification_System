@@ -43,16 +43,20 @@ const RegistrationForm = () => {
   const validateFirstName = () => {
     if (!firstName.trim()) {
       setFirstNameError("First name is required");
+      return false;
     } else {
       setFirstNameError("");
+      return true;
     }
   };
 
   const validateLastName = () => {
     if (!lastName.trim()) {
       setLastNameError("Last name is required");
+      return false;
     } else {
       setLastNameError("");
+      return true;
     }
   };
 
@@ -61,34 +65,43 @@ const RegistrationForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       setEmailError("Invalid email address. Correct format is abc@gmail.com");
+      return false;
     } else {
       setEmailError("");
+      return true;
     }
   };
 
   const validateAddress = () => {
     if (!address.trim()) {
       setAddressError("Address is required");
+      return false;
     } else {
       setAddressError("");
+      return true;
     }
   };
 
   const validateDob = () => {
     if (!dob.trim()) {
       setDobError("Date of birth is required");
+      return false;
     } else {
       setDobError("");
+      return true;
     }
   };
 
   const validatePhoneNumber = () => {
     if (!phoneNumber.trim()) {
       setPhoneNumberError("Phone number is required");
+      return false;
     } else if (!/^92\d{10}$/.test(phoneNumber)) {
       setPhoneNumberError("Correct format: 92XXXXXXXXX");
+      return false;
     } else {
       setPhoneNumberError("");
+      return true;
     }
   };
 
@@ -98,32 +111,41 @@ const RegistrationForm = () => {
 
     if (!cnic.trim()) {
       setCnicError("CNIC number is required");
+      return false;
     } else if (!cnicRegex.test(cnic)) {
       setCnicError(
         "Invalid CNIC number format. Correct format is XXXXX-XXXXXXX-X"
       );
+      return false;
     } else {
       setCnicError("");
+      return true;
     }
   };
 
   const validateNationality = () => {
     if (!nationality.trim()) {
       setNationalityError("Nationality is required");
+      return false;
     } else {
       setNationalityError("");
+      return true;
     }
   };
 
   const validateImage = () => {
     if (!image) {
       setImageError("Image is required");
+      return false;
     } else if (!image.type.startsWith("image/")) {
       setImageError("Invalid image format. Only images are allowed.");
-    } else if (image.size > 2 * 1024 * 1024) { // 2MB size limit
+      return false;
+    } else if (image.size > 2 * 1024 * 1024) {
       setImageError("Image size must be less than 2MB");
+      return false;
     } else {
       setImageError("");
+      return true;
     }
   };
 
@@ -132,15 +154,15 @@ const RegistrationForm = () => {
     e.preventDefault();
 
     // Trigger validation for each field
-    validateFirstName();
-    validateLastName();
-    validateEmail();
-    validateAddress();
-    validateDob();
-    validatePhoneNumber();
-    validateCnic();
-    validateNationality();
-    validateImage();
+    const isFirstNameValid = validateFirstName();
+    const isLastNameValid = validateLastName();
+    const isEmailValid = validateEmail();
+    const isAddressValid = validateAddress();
+    const isDobValid = validateDob();
+    const isPhoneNumberValid = validatePhoneNumber();
+    const isCnicValid = validateCnic();
+    const isNationalityValid = validateNationality();
+    const isImageValid = validateImage();
 
     // If terms are not agreed, set an error message
     if (!termsAgreed) {
@@ -148,17 +170,17 @@ const RegistrationForm = () => {
       return;
     }
 
-    // If there are no errors, proceed with form submission
+    // If all validations pass, proceed with form submission
     if (
-      !firstNameError &&
-      !lastNameError &&
-      !emailError &&
-      !addressError &&
-      !dobError &&
-      !phoneNumberError &&
-      !cnicError &&
-      !nationalityError &&
-      !imageError
+      isFirstNameValid &&
+      isLastNameValid &&
+      isEmailValid &&
+      isAddressValid &&
+      isDobValid &&
+      isPhoneNumberValid &&
+      isCnicValid &&
+      isNationalityValid &&
+      isImageValid
     ) {
       register();
       // Submit the form
