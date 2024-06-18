@@ -105,7 +105,7 @@ const ProfileCard = () => {
         <Grid container spacing={5} sx={{ mt: 6 }} >
           <Grid item xs={12} md={4}>
             <Card>
-              <Box sx={{ textAlign: 'center', p: 7 }} style={{marginBottom:"100px"}}>
+              <Box sx={{ textAlign: 'center', p: 7 }} style={{marginBottom:"50px"}}>
                 <Avatar
                   alt="Iris Image"
                   src={profile.irisImage}
@@ -136,9 +136,9 @@ const ProfileCard = () => {
             </Card>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Card style={{paddingTop:"20px", paddingBottom:"20px"}}>
+            <Card style={{paddingTop:"30px", paddingBottom:"30px"}}>
               <CardContent>
-                <Grid container spacing={3}>
+                <Grid container spacing={5}>
                   <Grid item xs={12}>
                     <TextField
                       fullWidth
@@ -245,16 +245,6 @@ const ProfileCard = () => {
                     Save Changes
                   </Button>
                 )}
-              </CardContent>
-            </Card>
-            <Card sx={{ mt: 4 }}>
-              <CardContent>
-                <Typography variant="h6" gutterBottom>
-                  Verification Count
-                </Typography>
-                <Typography variant="body1" color="text.secondary">
-                  This method has been used for verification {profile.verificationCount} times.
-                </Typography>
               </CardContent>
             </Card>
           </Grid>
