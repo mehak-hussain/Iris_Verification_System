@@ -387,7 +387,7 @@ export default function AddEmployeeView() {
               />
             </Grid>
           </Grid>
-          <Button type="submit" variant="contained" color="inherit">
+          <Button type="submit" variant="contained" color="primary">
             Send Email
           </Button>
         </form>

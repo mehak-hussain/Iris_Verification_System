@@ -435,7 +435,7 @@ const RegistrationForm = () => {
                 <Button
                   type="submit"
                   variant="contained"
-                  color="inherit"
+                  color="primary"
                   sx={{ mt: 5 }}
                 >
                   Next

@@ -49,7 +49,7 @@ const Verification = () => {
             
               <Button
                 variant="contained"
-                color="inherit"
+                color="primary"
                 sx={{
                   width: { xs: "100%", sm: "150px" },
                   borderRadius: "200px",
