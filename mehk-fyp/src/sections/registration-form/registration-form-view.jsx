@@ -395,31 +395,11 @@ const RegistrationForm = () => {
                     />
                   </Box>
                 </Grid>
-                {/* Add Image */}
-                <Grid item xs={12} sm={6}>
-                  <Box sx={{ m: 2 }}>
-                    <Typography variant="h6" sx={{ m: 1 }}>
-                      Add Iris Image
-                    </Typography>
-                    <TextField
-                      fullWidth
-                      required
-                      type="file"
-                      onChange={(e) => {
-                        setImage(e.target.files[0]);
-                        validateImage();
-                      }}
-                      error={!!imageError}
-                      helperText={imageError}
-                      id="image"
-                      InputLabelProps={{ shrink: true }}
-                    />
-                  </Box>
-                </Grid>
+                
               </Grid>
 
               {/* Terms and Conditions */}
-              <Grid container spacing={2} sx={{ my: 1, mx: 1 }}>
+              <Grid container spacing={2} sx={{ my: 4, mx: 1 }}>
                 <Checkbox
                   {...label}
                   checked={termsAgreed}

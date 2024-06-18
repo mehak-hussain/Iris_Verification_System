@@ -69,3 +69,7 @@ button:focus-visible {
   }
 }
 
+.nav-item{
+  color: red;
+}
+

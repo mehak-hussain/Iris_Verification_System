@@ -1,54 +1,64 @@
 import { ClassNames } from '@emotion/react';
-import SvgColor from '../../components/svg-color';
+import HomeIcon from '@mui/icons-material/Home';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import PersonIcon from '@mui/icons-material/Person';
+import FeedbackIcon from '@mui/icons-material/Feedback';
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer';
+import GroupIcon from '@mui/icons-material/Group';
 
 // ----------------------------------------------------------------------
-
-const icon = (name) => (
-  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
-);
 
 const navConfig = [
   {
     title: 'home',
     path: '/home',
-    icon: icon('ic_blog'),
+    icon: <HomeIcon className="nav-icon" />,
+    className: 'nav-item',
   },
   {
     title: 'dashboard',
     path: '/dashboard',
-    icon: icon('ic_analytics'),
+    icon: <DashboardIcon className="nav-icon" />,
+    className: 'nav-item',
   },
   {
     title: 'verification',
     path: '/verification',
-    icon: icon('ic_user'),
+    icon: <VerifiedUserIcon className="nav-icon" />,
+    className: 'nav-item',
   },
   {
     title: 'registration',
     path: '/register',
-    icon: icon('ic_user'),
+    icon: <PersonAddIcon className="nav-icon" />,
+    className: 'nav-item',
   },
   {
     title: 'person\'s data',
     path: '/person-profile',
-    icon: icon('ic_user'),
+    icon: <PersonIcon className="nav-icon" />,
+    className: 'nav-item',
   },
   {
     title: 'feedback',
     path: '/feedback',
-    icon: icon('ic_cart'),
+    icon: <FeedbackIcon className="nav-icon" />,
+    className: 'nav-item',
   },
   {
     title: 'feedback responses',
     path: '/feedback-responses',
-    icon: icon('ic_cart'),
+    icon: <QuestionAnswerIcon className="nav-icon" />,
+    className: 'nav-item',
   },
   {
     title: 'all employee',
     path: '/all-employee',
-    icon: icon('ic_user'),
+    icon: <GroupIcon className="nav-icon" />,
+    className: 'nav-item',
   }
-
 ];
 
 export default navConfig;
