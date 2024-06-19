@@ -34,12 +34,15 @@ export default function AllEmployeePageView() {
   const fetchEmployees = async () => {
     const token = getToken();
     try {
-      const response = await fetch("http://localhost:5000/api/v1/admin/getEmployees", {
-        method: "GET",
-        headers: {
-          Authorization: token,
-        },
-      });
+      const response = await fetch(
+        "http://localhost:5000/api/v1/admin/getEmployees",
+        {
+          method: "GET",
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
       const data = await response.json();
       if (data.success) {
         setEmployees(data.employee);
@@ -82,15 +85,22 @@ export default function AllEmployeePageView() {
     try {
       await Promise.all(
         selectedEmployees.map((employeeId) =>
-          fetch(`http://localhost:5000/api/v1/admin/deleteEmployee/${employeeId}`, {
-            method: "DELETE",
-            headers: {
-              Authorization: token,
-            },
-          })
+          fetch(
+            `http://localhost:5000/api/v1/admin/delEmployee/${employeeId}`,
+            {
+              method: "DELETE",
+              headers: {
+                Authorization: token,
+              },
+            }
+          )
+            .then((response) => response.json())
+            .then((data) => console.log(data))
         )
       );
-      setEmployees(employees.filter((employee) => !selectedEmployees.includes(employee.id)));
+      setEmployees(
+        employees.filter((employee) => !selectedEmployees.includes(employee.id))
+      );
       setSelectedEmployees([]);
     } catch (error) {
       console.error("Error deleting employees:", error);
@@ -114,7 +124,12 @@ export default function AllEmployeePageView() {
           <Button variant="contained" color="primary" onClick={handleView}>
             View
           </Button>
-          <Button variant="contained" color="secondary" onClick={handleDelete} sx={{ ml: 2 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleDelete}
+            sx={{ ml: 2 }}
+          >
             Delete
           </Button>
         </Box>
@@ -125,11 +140,19 @@ export default function AllEmployeePageView() {
             <TableRow>
               <TableCell padding="checkbox">
                 <Checkbox
-                  indeterminate={selectedEmployees.length > 0 && selectedEmployees.length < employees.length}
-                  checked={employees.length > 0 && selectedEmployees.length === employees.length}
+                  indeterminate={
+                    selectedEmployees.length > 0 &&
+                    selectedEmployees.length < employees.length
+                  }
+                  checked={
+                    employees.length > 0 &&
+                    selectedEmployees.length === employees.length
+                  }
                   onChange={(event) => {
                     if (event.target.checked) {
-                      setSelectedEmployees(employees.map((employee) => employee.id));
+                      setSelectedEmployees(
+                        employees.map((employee) => employee.id)
+                      );
                     } else {
                       setSelectedEmployees([]);
                     }
@@ -153,11 +176,16 @@ export default function AllEmployeePageView() {
             {employees
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((employee) => (
-                <TableRow key={employee.id} selected={selectedEmployees.includes(employee.id)}>
+                <TableRow
+                  key={employee.id}
+                  selected={selectedEmployees.includes(employee.id)}
+                >
                   <TableCell padding="checkbox">
                     <Checkbox
                       checked={selectedEmployees.includes(employee.id)}
-                      onChange={(event) => handleSelectEmployee(event, employee.id)}
+                      onChange={(event) =>
+                        handleSelectEmployee(event, employee.id)
+                      }
                     />
                   </TableCell>
                   <TableCell>{employee.firstName}</TableCell>
@@ -198,7 +226,8 @@ export default function AllEmployeePageView() {
         <DialogTitle>Confirm Deletion</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete the selected employees? This action cannot be undone.
+            Are you sure you want to delete the selected employees? This action
+            cannot be undone.
           </DialogContentText>
         </DialogContent>
         <DialogActions>

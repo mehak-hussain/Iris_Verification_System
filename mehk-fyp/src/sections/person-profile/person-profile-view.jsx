@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from "react";
 import {
   Container,
   Typography,
   Card,
   CardContent,
-  CardMedia,
   TextField,
   Grid,
   Button,
@@ -12,42 +11,63 @@ import {
   Avatar,
   IconButton,
   InputAdornment,
-} from '@mui/material';
-import { Edit, Save } from '@mui/icons-material';
+} from "@mui/material";
+import { Edit } from "@mui/icons-material";
+import { getToken } from "../../utils/token-util";
 
 const ProfileCard = () => {
-  const [cnic, setCnic] = useState('');
+  const [cnic, setCnic] = useState("");
   const [profile, setProfile] = useState(null);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [isEditing, setIsEditing] = useState({});
   const [hasChanges, setHasChanges] = useState(false);
-
-  // Dummy data for testing
-  const dummyProfileData = {
-    firstName: 'John',
-    lastName: 'Doe',
-    email: 'john.doe@example.com',
-    phone: '921234567890',
-    gender: 'Male',
-    nationality: 'Pakistani',
-    religion: 'Islam',
-    address: '123 Main St, Karachi, Pakistan',
-    cnic: '12345-1234567-1',
-    dob: '1990-01-01',
-    image: 'https://bootdey.com/img/Content/avatar/avatar1.png',
-    irisImage: 'https://bootdey.com/img/Content/avatar/avatar1.png', // Replace with URL to a dummy iris image if needed
-    verificationCount: 5,
-  };
+  const token = getToken();
 
   const handleSearch = () => {
-    if (cnic === '12345-1234567-1') {
-      setProfile(dummyProfileData);
-      setError('');
-    } else {
-      setProfile(null);
-      setError('No profile found with this CNIC');
-    }
+    fetch(`http://localhost:5000/api/v1/employee/person/cnic/${cnic}`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        setProfile(data.person);
+        setError("");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+
+        setProfile(null);
+        setError("No profile found with this CNIC");
+      });
   };
+  // Dummy data for testing
+  // const dummyProfileData = {
+  //   firstName: 'John',
+  //   lastName: 'Doe',
+  //   email: 'john.doe@example.com',
+  //   phone: '921234567890',
+  //   gender: 'Male',
+  //   nationality: 'Pakistani',
+  //   religion: 'Islam',
+  //   address: '123 Main St, Karachi, Pakistan',
+  //   cnic: '12345-1234567-1',
+  //   dob: '1990-01-01',
+  //   image: 'https://bootdey.com/img/Content/avatar/avatar1.png',
+  //   irisImage: 'https://bootdey.com/img/Content/avatar/avatar1.png', // Replace with URL to a dummy iris image if needed
+  //   verificationCount: 5,
+  // };
+  // const handleSearch = () => {
+  //   if (cnic === "12345-1234567-1") {
+  //     setProfile(dummyProfileData);
+  //     setError("");
+  //   } else {
+  //     setProfile(null);
+  //     setError("No profile found with this CNIC");
+  //   }
+  // };
 
   const handleEditToggle = (field) => {
     setIsEditing((prevState) => ({
@@ -102,14 +122,17 @@ const ProfileCard = () => {
       )}
 
       {profile && (
-        <Grid container spacing={5} sx={{ mt: 6 }} >
+        <Grid container spacing={5} sx={{ mt: 6 }}>
           <Grid item xs={12} md={4}>
             <Card>
-              <Box sx={{ textAlign: 'center', p: 7 }} style={{marginBottom:"50px"}}>
+              <Box
+                sx={{ textAlign: "center", p: 7 }}
+                style={{ marginBottom: "50px" }}
+              >
                 <Avatar
                   alt="Iris Image"
                   src={profile.irisImage}
-                  sx={{ width: 100, height: 100, margin: '0 auto' }}
+                  sx={{ width: 100, height: 100, margin: "0 auto" }}
                 />
                 <Typography variant="h5" sx={{ mt: 2 }}>
                   {profile.firstName} {profile.lastName}
@@ -136,7 +159,7 @@ const ProfileCard = () => {
             </Card>
           </Grid>
           <Grid item xs={12} md={8}>
-            <Card style={{paddingTop:"30px", paddingBottom:"30px"}}>
+            <Card style={{ paddingTop: "30px", paddingBottom: "30px" }}>
               <CardContent>
                 <Grid container spacing={5}>
                   <Grid item xs={12}>
@@ -149,13 +172,15 @@ const ProfileCard = () => {
                         readOnly: !isEditing.fullName,
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton onClick={() => handleEditToggle('fullName')}>
+                            <IconButton
+                              onClick={() => handleEditToggle("fullName")}
+                            >
                               <Edit />
                             </IconButton>
                           </InputAdornment>
                         ),
                       }}
-                      onChange={(e) => handleInputChange(e, 'fullName')}
+                      onChange={(e) => handleInputChange(e, "fullName")}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -168,13 +193,15 @@ const ProfileCard = () => {
                         readOnly: !isEditing.email,
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton onClick={() => handleEditToggle('email')}>
+                            <IconButton
+                              onClick={() => handleEditToggle("email")}
+                            >
                               <Edit />
                             </IconButton>
                           </InputAdornment>
                         ),
                       }}
-                      onChange={(e) => handleInputChange(e, 'email')}
+                      onChange={(e) => handleInputChange(e, "email")}
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -187,13 +214,15 @@ const ProfileCard = () => {
                         readOnly: !isEditing.phone,
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton onClick={() => handleEditToggle('phone')}>
+                            <IconButton
+                              onClick={() => handleEditToggle("phone")}
+                            >
                               <Edit />
                             </IconButton>
                           </InputAdornment>
                         ),
                       }}
-                      onChange={(e) => handleInputChange(e, 'phone')}
+                      onChange={(e) => handleInputChange(e, "phone")}
                     />
                   </Grid>
                   <Grid item xs={6}>
@@ -206,13 +235,15 @@ const ProfileCard = () => {
                         readOnly: !isEditing.nationality,
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton onClick={() => handleEditToggle('nationality')}>
+                            <IconButton
+                              onClick={() => handleEditToggle("nationality")}
+                            >
                               <Edit />
                             </IconButton>
                           </InputAdornment>
                         ),
                       }}
-                      onChange={(e) => handleInputChange(e, 'nationality')}
+                      onChange={(e) => handleInputChange(e, "nationality")}
                     />
                   </Grid>
                   <Grid item xs={12}>
@@ -225,13 +256,15 @@ const ProfileCard = () => {
                         readOnly: !isEditing.address,
                         endAdornment: (
                           <InputAdornment position="end">
-                            <IconButton onClick={() => handleEditToggle('address')}>
+                            <IconButton
+                              onClick={() => handleEditToggle("address")}
+                            >
                               <Edit />
                             </IconButton>
                           </InputAdornment>
                         ),
                       }}
-                      onChange={(e) => handleInputChange(e, 'address')}
+                      onChange={(e) => handleInputChange(e, "address")}
                     />
                   </Grid>
                 </Grid>
