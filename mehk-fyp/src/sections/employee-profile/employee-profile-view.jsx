@@ -28,7 +28,26 @@ export default function EmployeeProfilePage() {
   });
   const [errors, setErrors] = useState({});
   const [isEditing, setIsEditing] = useState(false);
+  const fetchEmployeeData = () => {
+    const token = getToken();
 
+    fetch(`http://localhost:5000/api/v1/employee/getEmployee/`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        console.log(response);
+        setEmployee(response.employee);
+      })
+      .catch((e) => console.log(e));
+    // if (!response.ok) throw new Error("Failed to fetch employee data");
+    // const data = await response.json();
+
+    // console.error("Error:", error);
+  };
   const validate = (field, value) => {
     let error = "";
 
@@ -42,13 +61,16 @@ export default function EmployeeProfilePage() {
         if (!value.trim()) error = `${field} is required`;
         break;
       case "email":
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) error = "Invalid email address";
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+          error = "Invalid email address";
         break;
       case "phone":
-        if (!/^92\d{10}$/.test(value)) error = "Phone number must start with '92' followed by 10 digits";
+        if (!/^92\d{10}$/.test(value))
+          error = "Phone number must start with '92' followed by 10 digits";
         break;
       case "password":
-        if (value.length < 6) error = "Password must be at least 6 characters long";
+        if (value.length < 6)
+          error = "Password must be at least 6 characters long";
         break;
       case "cnic":
         if (!/^\d{5}-\d{7}-\d{1}$/.test(value)) error = "Invalid CNIC number";
@@ -57,7 +79,10 @@ export default function EmployeeProfilePage() {
         if (!value) error = "Date of Birth is required";
         break;
       case "image":
-        if (value && (!value.type.startsWith("image/") || value.size > 2 * 1024 * 1024)) {
+        if (
+          value &&
+          (!value.type.startsWith("image/") || value.size > 2 * 1024 * 1024)
+        ) {
           error = "Invalid image format or size > 2MB";
         }
         break;
@@ -107,23 +132,6 @@ export default function EmployeeProfilePage() {
   };
 
   useEffect(() => {
-    const fetchEmployeeData = async () => {
-      const token = getToken();
-      try {
-        const response = await fetch("http://localhost:5000/api/v1/admin/getEmployee", {
-          method: "GET",
-          headers: {
-            Authorization: token,
-          },
-        });
-        if (!response.ok) throw new Error("Failed to fetch employee data");
-        const data = await response.json();
-        setEmployee(data);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
-
     fetchEmployeeData();
   }, []);
 
@@ -131,9 +139,16 @@ export default function EmployeeProfilePage() {
     <Container>
       {!isEditing ? (
         <Box>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={5}
+          >
             <Typography variant="h4">Employee Profile</Typography>
-            <Button variant="contained" onClick={() => setIsEditing(true)}>Edit Profile</Button>
+            <Button variant="contained" onClick={() => setIsEditing(true)}>
+              Edit Profile
+            </Button>
           </Stack>
           <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -190,9 +205,16 @@ export default function EmployeeProfilePage() {
         </Box>
       ) : (
         <Box>
-          <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+          <Stack
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+            mb={5}
+          >
             <Typography variant="h4">Edit Employee Details</Typography>
-            <Button variant="contained" onClick={() => setIsEditing(false)}>Cancel</Button>
+            <Button variant="contained" onClick={() => setIsEditing(false)}>
+              Cancel
+            </Button>
           </Stack>
           <Stack direction="column" mb={5}>
             <form onSubmit={handleSubmit}>
@@ -323,7 +345,12 @@ export default function EmployeeProfilePage() {
                   <Box sx={{ my: 2 }}>
                     <DatePicker
                       value={employee.dob}
-                      onChange={(date) => setEmployee((prevEmployee) => ({ ...prevEmployee, dob: date }))}
+                      onChange={(date) =>
+                        setEmployee((prevEmployee) => ({
+                          ...prevEmployee,
+                          dob: date,
+                        }))
+                      }
                       error={!!errors.dob}
                     />
                   </Box>
