@@ -108,7 +108,7 @@ export default function AllEmployeePageView() {
   };
 
   const handleView = () => {
-    navigate(`/view-selected-employees`, { state: { selectedEmployees } });
+    navigate(`/employee-profile`, { state: { selectedEmployees } });
   };
 
   return (
