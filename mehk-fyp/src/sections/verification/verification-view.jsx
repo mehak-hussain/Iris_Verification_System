@@ -1,129 +1,79 @@
-import React, { useRef, useCallback, useState } from "react";
-import Webcam from "react-webcam";
-import {
-  Box,
-  Container,
-  Typography,
-  Button,
-  Stack,
-  Grid,
-  Card,
-} from "@mui/material";
-import { PhotoCamera } from "@mui/icons-material";
-import { Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, IconButton } from '@mui/material';
+import { PhotoCamera } from '@mui/icons-material';
 
-const Verification = () => {
-  const webcamRef = useRef(null);
-  const [message, setMessage] = useState("");
-  const [isClick, setIsClick] = useState(false);
+const VerificationPage = () => {
+  const [open, setOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
 
-  const handleClick = () => {
-    setIsClick(!isClick);
-    const capture = useCallback(() => {
-      const imageSrc = webcamRef.current.getScreenshot();
-      setMessage("Image captured!");
-    }, [webcamRef]);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleImageChange = (event) => {
+    setSelectedImage(URL.createObjectURL(event.target.files[0]));
   };
 
   return (
-    <Container style={{ height: "80vh" }}>
-      {message && <p>{message}</p>}
-      <Stack
-        direction="row"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={5}
-      >
-        <Typography variant="h4" sx={{ textAlign: "center" }}>
-          Verification
-        </Typography>
-      </Stack>
-      {isClick ? (
-        <div
-          style={{
-            width: "100%",
-          }}
-        >
-          <Webcam ref={webcamRef} />{" "}
-          <Stack direction="row" sx={{ mb: 2, p: 3 }}>
-            
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{
-                  width: { xs: "100%", sm: "150px" },
-                  borderRadius: "200px",
-                }}
-              >
-                Verify
-              </Button>
-            
-          </Stack>
-        </div>
-      ) : (
-        <Grid container spacing={2} direction={"row"}>
-          {/* Eye Scanner Card */}
-          <Grid item xs={12} md={6} p={3}>
-            <Card sx={{ p: 2, textAlign: "center", height: "450px" }}>
-              <Box sx={{ my: 2 }}>
-                <PhotoCamera
-                  onClick={handleClick}
-                  style={{
-                    fontSize: "8rem",
-                  }}
-                />
-              </Box>
-              <Typography variant="h2" sx={{ mb: 2, p: 3 }}>
-                Iris Scanner
-              </Typography>
-              <Typography variant="h6">
-                Open Camera for scanning your Eyes
-              </Typography>
-            </Card>
-          </Grid>
+    <div style={{ padding: '20px' }}>
+      <h1>Steps to follow:</h1>
+      <p>If you have not registered, then register your account first.</p>
+      <p>Already registered, then start verification process.</p>
+      <p>Make sure you have opened the camera for scanning your eyes.</p>
+      <p>Don't forget to give feedback about your experience.</p>
+      <p>If you are facing any issue, then contact us.</p>
+      <p>Already registered, then click here for verification process.</p>
+      <Button variant="contained" color="primary" onClick={handleClickOpen}>
+        Start Verification Process
+      </Button>
 
-          {/* Upload Image Card */}
-          <Grid item xs={12} md={6}>
-            <Box sx={{ mb: 2, p: 3 }}>
-              <Typography variant="h2">Steps to follow:</Typography>
-            </Box>
-            <ul>
-              <li style={{ paddingBottom: "10px" }}>
-                <Typography variant="p" fontSize={20}>
-                  If you have not registered, then register your account first.
-                </Typography>
-              </li>
-              <li style={{ paddingBottom: "10px" }}>
-                <Typography variant="p" fontSize={20}>
-                  Already registered, then start verification process.{" "}
-                </Typography>
-              </li>
-              <li style={{ paddingBottom: "10px" }}>
-                <Typography variant="p" fontSize={20}>
-                  Make sure you have opened the camera for scanning your eyes.
-                </Typography>
-              </li>
-              <li style={{ paddingBottom: "10px" }}>
-                <Typography variant="p" fontSize={20}>
-                  Dont forget to give feedback about your experience.{" "}
-                </Typography>
-              </li>
-              <li style={{ paddingBottom: "10px" }}>
-                <Typography variant="p" fontSize={20}>
-                  If you are facing any issue, then contact us.
-                </Typography>
-              </li>
-              <li style={{ paddingBottom: "10px" }}>
-                <Typography variant="p" fontSize={20}>
-                  Already registered, then start verification process.{" "}
-                </Typography>
-              </li>
-            </ul>
-          </Grid>
-        </Grid>
-      )}
-    </Container>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Select Image</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Choose an image for verification.
+          </DialogContentText>
+          <input
+            accept="image/*"
+            style={{ display: 'none' }}
+            id="raised-button-file"
+            type="file"
+            onChange={handleImageChange}
+          />
+          <label htmlFor="raised-button-file">
+            <Button variant="contained" component="span" startIcon={<PhotoCamera />}>
+              Upload
+            </Button>
+          </label>
+          {selectedImage && (
+            <div style={{ marginTop: '20px' }}>
+              <img src={selectedImage} alt="Selected" style={{ width: '100%', maxHeight: '300px' }} />
+            </div>
+          )}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={() => {
+              // Here you can handle the verification process
+              console.log('Verification process started with image:', selectedImage);
+              handleClose();
+            }}
+            color="primary"
+            disabled={!selectedImage}
+          >
+            Verify
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 };
 
-export default Verification;
+export default VerificationPage;

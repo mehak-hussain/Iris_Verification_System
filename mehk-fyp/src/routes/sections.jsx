@@ -15,8 +15,8 @@ export const RegisterPage = lazy(() => import("../pages/register"));
 export const DashboardPage = lazy(() => import("../pages/dashboard"));
 export const PersonProfPage = lazy(() => import("../pages/person-profile"));
 export const VerificationPage = lazy(() => import("../pages/verification"));
-export const AccountSettingPage = lazy(() =>import("../pages/account-setting")
-);
+export const AccountSettingPage = lazy(() =>import("../pages/account-setting"));
+export const ChangePasswordPage = lazy(() =>import("../pages/change-pwd-employee"));
 // ----------------------------------------------------------------------
 
 export default function Router() {
@@ -52,6 +52,7 @@ export default function Router() {
         { path: "register", element: <RegisterPage /> },
         { path: "dashboard", element: <DashboardPage /> },
         { path: "verification", element: <VerificationPage /> },
+        { path: "change-password", element: <ChangePasswordPage /> },
         { path: "account-setting", element: <AccountSettingPage /> },
       ],
     },

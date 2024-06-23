@@ -268,19 +268,6 @@ export default function EmployeeProfilePage() {
                   />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="h6">Password</Typography>
-                  <TextField
-                    fullWidth
-                    required
-                    value={employee.password}
-                    onChange={handleChange("password")}
-                    error={!!errors.password}
-                    helperText={errors.password}
-                    id="password"
-                    type="password"
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
                   <Typography variant="h6">Gender</Typography>
                   <TextField
                     fullWidth
@@ -361,7 +348,7 @@ export default function EmployeeProfilePage() {
                   )}
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Typography variant="h6">Upload Image</Typography>
+                  <Typography variant="h6">Change Image</Typography>
                   <Button variant="contained" component="label" sx={{ mt: 1 }}>
                     Upload File
                     <input

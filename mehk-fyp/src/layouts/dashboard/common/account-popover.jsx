@@ -23,12 +23,12 @@ const MENU_OPTIONS = [
     label: 'Add Employee',
     icon: 'eva:person-fill',
     url:"/add-employee"
+  },
+  {
+    label: 'Change Password',
+    icon: 'eva:settings-2-fill',
+    url:"/change-password"
   }
-  // {
-  //   label: 'Settings',
-  //   icon: 'eva:settings-2-fill',
-  //   url:"/account-setting"
-  // },
 ];
 
 // ----------------------------------------------------------------------

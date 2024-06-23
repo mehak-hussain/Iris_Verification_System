@@ -208,8 +208,26 @@ export default function AddEmployeeView() {
       body: formData,
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
+      .then((data) => {
+        console.log(data);
+        clearForm();
+      })
       .catch((error) => console.error("Error:", error));
+  };
+
+  const clearForm = () => {
+    setFirstName("");
+    setLastName("");
+    setEmail("");
+    setPhone("");
+    setPassword("");
+    setGender("");
+    setNationality("");
+    setReligion("");
+    setAddress("");
+    setCnic("");
+    setDob(null);
+    setImage(null);
   };
 
   return (
