@@ -1,21 +1,39 @@
-import React, { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, IconButton } from '@mui/material';
-import { PhotoCamera } from '@mui/icons-material';
+import React, { useState, useEffect } from 'react';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@mui/material';
 
 const VerificationPage = () => {
   const [open, setOpen] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [images, setImages] = useState([]);
+  const [selectedImages, setSelectedImages] = useState([]);
 
   const handleClickOpen = () => {
     setOpen(true);
+    fetchImages();
   };
 
   const handleClose = () => {
     setOpen(false);
+    setSelectedImages([]);
   };
 
-  const handleImageChange = (event) => {
-    setSelectedImage(URL.createObjectURL(event.target.files[0]));
+  const fetchImages = async () => {
+    try {
+      const response = await fetch('YOUR_API_ENDPOINT'); // Replace with your API endpoint
+      const data = await response.json();
+      setImages(data);
+    } catch (error) {
+      console.error('Error fetching images:', error);
+    }
+  };
+
+  const handleImageSelect = (image) => {
+    setSelectedImages((prevSelectedImages) => {
+      if (prevSelectedImages.includes(image)) {
+        return prevSelectedImages.filter((img) => img !== image);
+      } else {
+        return [...prevSelectedImages, image];
+      }
+    });
   };
 
   return (
@@ -31,29 +49,28 @@ const VerificationPage = () => {
         Start Verification Process
       </Button>
 
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Select Image</DialogTitle>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+        <DialogTitle>Select Images</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Choose an image for verification.
+            Choose images for verification from the library.
           </DialogContentText>
-          <input
-            accept="image/*"
-            style={{ display: 'none' }}
-            id="raised-button-file"
-            type="file"
-            onChange={handleImageChange}
-          />
-          <label htmlFor="raised-button-file">
-            <Button variant="contained" component="span" startIcon={<PhotoCamera />}>
-              Upload
-            </Button>
-          </label>
-          {selectedImage && (
-            <div style={{ marginTop: '20px' }}>
-              <img src={selectedImage} alt="Selected" style={{ width: '100%', maxHeight: '300px' }} />
-            </div>
-          )}
+          <Grid container spacing={2}>
+            {images.map((image) => (
+              <Grid item xs={4} key={image.id}>
+                <img
+                  src={image.url}
+                  alt={image.name}
+                  style={{
+                    width: '100%',
+                    cursor: 'pointer',
+                    border: selectedImages.includes(image) ? '2px solid blue' : '2px solid transparent'
+                  }}
+                  onClick={() => handleImageSelect(image)}
+                />
+              </Grid>
+            ))}
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">
@@ -62,11 +79,11 @@ const VerificationPage = () => {
           <Button
             onClick={() => {
               // Here you can handle the verification process
-              console.log('Verification process started with image:', selectedImage);
+              console.log('Verification process started with images:', selectedImages);
               handleClose();
             }}
             color="primary"
-            disabled={!selectedImage}
+            disabled={selectedImages.length === 0}
           >
             Verify
           </Button>
