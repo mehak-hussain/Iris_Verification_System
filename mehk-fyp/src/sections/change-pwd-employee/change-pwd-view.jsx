@@ -64,7 +64,7 @@ const ResetPassword = () => {
                 required 
               />
             </div>
-            <Button type="submit" variant="contained" color="primary">Reset Password</Button>
+            <button className='reset-pwd-btn' type="submit" variant="contained" color="primary" >Reset Password</button>
           </form>
         ) : (
           <div className="success-message">
