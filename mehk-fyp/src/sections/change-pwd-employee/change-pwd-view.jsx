@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../change-pwd-employee/'; // Assuming you will create CSS file for styling
+import '../change-pwd-employee/ChangePassword.css'; // Assuming you will create CSS file for styling
 
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
