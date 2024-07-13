@@ -191,15 +191,15 @@ export default function FeedbackPage() {
             <Typography variant="h6" sx={{ mb: 1 }}>
               Message
             </Typography>
-            <Textarea
-              minRows={10}
+            <textarea
+            minRows={10}
               maxRows={20}
               aria-label="Message"
               placeholder="Your feedback"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
-              sx={{ width: "100%", my: 1, "& > textarea": { width: "100%" } }}
-            />
+              sx={{ width: "100%", my: 1, "& > textarea": { width: "100%" } }}/>
+
             {errors.message && (
               <Typography variant="body2" color="error">
                 {errors.message}
